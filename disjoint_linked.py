@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, key):    # MAKE_SET()
+    def __init__(self, key):
         self.list = None
         self.next = None
         self.key = key
@@ -13,21 +13,23 @@ class Node:
     def set_next(self, next):
         self.next = next
     
-    def find_list(self):    # maybe i should pass the key (not the node itself)
+    def find_list(self):
         return self.list
 
 class NodeList:
-    def __init__(self, node):
-        self.head = node
+    def __init__(self, node):   # MAKE_SET()
+        self.head = None
+        self.tail = None
+        self.nodes = []
+        self.add_node(node)
+    
+    def add_node(self, node):
+        node.set_list(self)
+        node.set_next(None)
+        if self.head is None:
+            self.head = node
+        self.nodes.append(node)
         self.tail = node
-        self.nodes = []  # Initialize with the single node
-        self.size = 1
-
-    def set_head(self, head):
-        self.head = head
-
-    def set_tail(self, tail):
-        self.tail = tail
 
     def union(self, other_list):
         """
@@ -39,7 +41,6 @@ class NodeList:
         self.tail.next = other_list.head
         self.tail = other_list.tail
         self.nodes.extend(other_list.nodes)
-        self.size += other_list.size
         for node in other_list.nodes:
             node.list = self
 
@@ -52,34 +53,51 @@ class NodeList:
 
 class DisjointSetHandler:
     def __init__(self):
-        self.sets = []  # List to store all NodeList sets
-        
-    def make_set(self, key):
-        """Create a new set with a single node"""
-        node = Node(key)
-        new_list = NodeList(node)
-        node.set_list(new_list)
-        new_list.nodes.append(node)
-        self.sets.append(new_list)
-        return node
-    
+        # Dictionary to store disjoint sets: {node_key: NodeList}
+        self.sets = {}
+
+    def make_set(self, node):
+        """Create a new set with a single node."""
+        if node.key in self.sets:
+            return self.sets[node.key]
+        new_set = NodeList(node)
+        self.sets[node.key] = new_set
+        return new_set
+
     def find_set(self, node):
-        """Find the set containing the given node"""
+        """Find the set containing the given node."""
         return node.find_list()
 
-    def union(self, i, j):
-        """Union the sets at indexes i and j."""
-        if i == j:
-            raise ValueError("Cannot union the same set with itself.")
-        list1 = self.sets[i]
-        list2 = self.sets[j]
+    def union(self, list1, list2):
+        """Union the sets corresponding to list1 and list2."""
+        if list1 == list2:
+            return  # Already in the same set, do nothing
 
-        list1.union(list2)
-        self.sets.pop(j)
+        list1.union(list2)  # Merge list2 into list1
 
+        for node in list2.nodes: # Remove list2 from the dictionary
+            self.sets.pop(node.key, None)  # Remove node from the map
+
+    def generate_nodes(self, n):
+        """Generate a list of Node objects with keys from 0 to n-1."""
+        return [self.make_set(i) for i in range(n)]
+
+    def find_connected_components(self, graph):
+        nodes = graph.nodes
+        edges = graph.edges
+        for node in nodes:
+            self.make_set(node)
+
+        for edge in edges:
+            u, v = edge
+            self.union(self.find_set(u), self.find_set(v))
+        
     def print(self):
-        """Print all sets with their elements"""
-        for i in range(len(self.sets)):
-            print(f"Set {i}: ")
-            self.sets[i].print()
-        print("\n")
+        print("Disjoint Sets:")
+        for key, node_list in self.sets.items():
+            print(f"Set with root {key}: ", end="")
+            current_node = node_list.head
+            while current_node:
+                print(current_node.key, end=" ")
+                current_node = current_node.next
+            print()
