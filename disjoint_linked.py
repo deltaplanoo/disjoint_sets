@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, key):            # MAKE_SET()
+    def __init__(self, key):    # MAKE_SET()
         self.list = None
         self.next = None
         self.key = key
@@ -13,7 +13,7 @@ class Node:
     def set_next(self, next):
         self.next = next
     
-    def find_list(self):        # maybe i should pass the key (not the node itself)
+    def find_list(self):    # maybe i should pass the key (not the node itself)
         return self.list
 
 class NodeList:
