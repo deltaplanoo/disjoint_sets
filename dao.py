@@ -12,21 +12,21 @@ def create_database():
             CREATE TABLE IF NOT EXISTS results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
 				method TEXT,
-                nodes INTEGER,
-                edges INTEGER,
+                n INTEGER,
+                m INTEGER,
                 time REAL
             )
         """)
         conn.commit()
 
 # Insert a record into the database
-def insert_result(method, nodes, edges, time):
+def insert_result(method, n, m, time):
     with sqlite3.connect(DATABASE_FILE) as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO results (method, nodes, edges, time)
+            INSERT INTO results (method, n, m, time)
             VALUES (?, ?, ?, ?)
-        """, (method, nodes, edges, time))
+        """, (method, n, m, time))
         conn.commit()
 
 # Query and display all results

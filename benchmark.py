@@ -6,9 +6,10 @@ import dao
 
 def bench(p):
 	dao.create_database()
-	n = 10
-	e = 2
-	while (n <= 10000000):
+	n = 50000
+	e = 15000
+	m = 0
+	while (m <= 5000000):
 		### GENERAL ###
 		handler = dl.DisjointSetHandler()
 		nodes = [dl.Node(i) for i in range(n)]
@@ -18,16 +19,16 @@ def bench(p):
 
 		### FIND CONNECTED COMPONENTS ###
 		start = time.time()
-		handler.find_connected_components(graph)
+		m = handler.find_connected_components(graph)
 		end = time.time()
 		exec_time = end - start
-		print(f"(n, e): ({n}, {e}) - time: {exec_time:.6f} seconds")
+		print(f"m: {m} - time: {exec_time:.6f} seconds")
 
 		# Benchmark results
-		dao.insert_result("linked", n, e, exec_time)
+		dao.insert_result("linked", n, m, exec_time)
 		
-		# next
-		n = n*p
-		e = e*p
+		# Next benchmark
+		n = n+p
+		e = e+p
 
-bench(5)
+bench(25000)

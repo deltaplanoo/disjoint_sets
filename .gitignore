@@ -1,2 +1,3 @@
 .venv
 benchmark_results.db
+.DS_Store

@@ -85,12 +85,17 @@ class DisjointSetHandler:
     def find_connected_components(self, graph):
         nodes = graph.nodes
         edges = graph.edges
+        m = 0
         for node in nodes:
             self.make_set(node)
+            m += 1
 
         for edge in edges:
             u, v = edge
             self.union(self.find_set(u), self.find_set(v))
+            m += 3
+        return m
+
         
     def print(self):
         print("Disjoint Sets:")
