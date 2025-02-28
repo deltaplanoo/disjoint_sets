@@ -1,18 +1,21 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import random
-import disjoint_linked as dl
-import graph as g
 import time
-import dao
+from structures import disjoint_forest as d
+from structures import graph as g
+from DAO import dao
 
 def bench(p):
 	dao.create_database()
-	n = 50000
-	e = 15000
+	n = 500
+	e = 40
 	m = 0
-	while (m <= 5000000):
+	while (m <= 1):
 		### GENERAL ###
-		handler = dl.DisjointSetHandler()
-		nodes = [dl.Node(i) for i in range(n)]
+		handler = d.DisjointSetHandler()
+		nodes = [d.Node(i) for i in range(n)]
 		### GRAPH GENERATION ###
 		graph = g.Graph(nodes)
 		graph.generate_edges(e)
@@ -31,4 +34,4 @@ def bench(p):
 		n = n+p
 		e = e+p
 
-bench(25000)
+bench(25)
