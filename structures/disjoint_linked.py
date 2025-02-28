@@ -3,9 +3,9 @@ class Node:
         self.list = None
         self.next = None
         self.key = key
-	
+    
     def set_key(self, key):
-    	self.key = key
+        self.key = key
 
     def set_list(self, list):
         self.list = list
@@ -68,8 +68,10 @@ class DisjointSetHandler:
         """Find the set containing the given node."""
         return node.find_list()
 
-    def union(self, list1, list2):
-        """Union the sets corresponding to list1 and list2."""
+    def union(self, node1, node2):
+        """Union the sets containing node1 and node2."""
+        list1 = self.find_set(node1)
+        list2 = self.find_set(node2)
         if list1 == list2:
             return  # Already in the same set, do nothing
 
@@ -92,7 +94,9 @@ class DisjointSetHandler:
 
         for edge in edges:
             u, v = edge
-            self.union(self.find_set(u), self.find_set(v))
+            #FIXME: self.union(u, v) and move the union logic to the union method
+            self.union(u, v)
+            # 2 find_set() and 1 union
             m += 3
         return m
 
