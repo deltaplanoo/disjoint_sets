@@ -7,12 +7,12 @@ from structures import disjoint_forest as d
 from structures import graph as g
 from DAO import dao
 
-def bench(p):
+def bench(n, e, m_max, p):
+	print("Benching forest")
 	dao.create_database()
-	n = 500
-	e = 40
+	p_e = p * (n//e)
 	m = 0
-	while (m <= 1):
+	while (m <= m_max):
 		### GENERAL ###
 		handler = d.DisjointSetHandler()
 		nodes = [d.Node(i) for i in range(n)]
@@ -31,7 +31,5 @@ def bench(p):
 		dao.insert_result("forest", n, m, exec_time)
 		
 		# Next benchmark
-		n = n+p
-		e = e+p
-
-bench(25)
+		n = n * p
+		e = e * p_e
