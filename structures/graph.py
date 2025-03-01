@@ -22,13 +22,16 @@ class Graph:
         while len(edges) < e:
             u = random.choice(self.nodes)  # Pick 2 random nodes
             v = random.choice(self.nodes)
-
-            if (u != v and u.key <= v.key):	# Ensure uniqueness
-                edge = (u,v)
-            elif u != v and u.key > v.key:
-                edge = (v,u)
-            edges.add(edge)
-        self.edges = [(u, v) for u, v in edges]  # Store actual Node pairs
+            
+            if u != v:  # No self-loops
+                if u.key <= v.key:
+                    edge = (u, v)
+                else:
+                    edge = (v, u)
+                edges.add(edge)
+        
+        self.edges = list(edges)  # Store actual Node pairs
+        return self.edges
 
     def print_graph(self):
         """Print the graph's edges."""
