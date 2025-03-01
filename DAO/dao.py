@@ -1,8 +1,9 @@
 import sqlite3
 import time
+import os
 
-# Database file name
-DATABASE_FILE = "benchmark_results.db"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+DATABASE_FILE = os.path.join(current_dir, "benchmark_results.db")
 
 # Create the database and table (if they don't exist)
 def create_database():
@@ -11,13 +12,14 @@ def create_database():
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-				method TEXT,
+                method TEXT,
                 n INTEGER,
                 m INTEGER,
                 time REAL
             )
         """)
         conn.commit()
+
 
 # Insert a record into the database
 def insert_result(method, n, m, time):
