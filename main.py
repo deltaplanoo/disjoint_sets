@@ -7,3 +7,4 @@ import time
 from DAO import dao
 
 dao.display_results()
+# dao.remove_by_method("forest")

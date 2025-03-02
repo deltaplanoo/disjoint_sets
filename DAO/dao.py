@@ -31,6 +31,23 @@ def insert_result(method, n, m, time):
         """, (method, n, m, time))
         conn.commit()
 
+def remove_by_method(method_value):
+    """
+    Removes tuples from the 'results' table where the 'method' field matches the given value.
+
+    Args:
+        method_value: The string value of the 'method' field to filter by.
+    """
+    try:
+        with sqlite3.connect(DATABASE_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM results WHERE method = ?", (method_value,))
+            conn.commit()
+            print(f"Removed tuples with method = '{method_value}'.")
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+
+
 # Query and display all results
 def display_results():
     with sqlite3.connect(DATABASE_FILE) as conn:
