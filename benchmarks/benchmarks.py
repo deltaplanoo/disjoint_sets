@@ -9,7 +9,7 @@ def bench_all(n, e, m_max, p):
 	bench_list(n, e, m_max, p)
 	bench_forest(n, e, m_max, p)
 
-def generate_plot(output_path=None):
+def generate_plot(title="Tempo vs Numero m di operazioni", output_path=None):
     # Connect to the db
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
@@ -54,9 +54,9 @@ def generate_plot(output_path=None):
     plt.xscale("log")
     plt.yscale("log")
 
-    plt.xlabel("m (Log Scale)")
-    plt.ylabel("Time (Log Scale)")
-    plt.title("Execution Time vs. m (Log-Log Scale)")
+    plt.xlabel("m (Scala Logaritmica)")
+    plt.ylabel("Tempo (Scala Logaritmica)")
+    plt.title(title)
     plt.legend()
 
     # Set grid only at powers of 10
@@ -78,5 +78,6 @@ def generate_plot(output_path=None):
 
 
 if __name__ == "__main__":
-	bench_all(5, 0.2, 1000000, 3)	# nodes, density, m_max, step
+	#bench_all(5, 0.2, 1000000, 3)	# nodes, density, m_max, step
+	bench_list(5, 0.2, 1000000, 3)
 	generate_plot()

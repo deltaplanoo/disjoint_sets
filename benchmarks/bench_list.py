@@ -22,16 +22,24 @@ def bench(n, density, m_max, p):
 		print(f"Graph with {n} nodes and {e} edges -> computed density: {(2*e)/(n*(n-1)):.6f}")
 
 		### FIND CONNECTED COMPONENTS ###
+		# Normal & Weighted computed on the same graph
 		start = time.time()
 		m = handler.find_connected_components(graph)
 		end = time.time()
+		weighted_start = time.time()
+		weighted_m = handler.weighted_find_connected_components(graph)
+		weighted_end = time.time()
 		exec_time = end - start
-		print(f"m: {m} - time: {exec_time:.6f} seconds")
+		weighted_exec_time = weighted_end - weighted_start
+		print(f"(Normal)   m: {m} - time: {exec_time:.6f} seconds")
+		print(f"(weighted) m: {weighted_m} - time : {weighted_exec_time:.6f} seconds")
 		print()
 
 		# Benchmark results
 		dao.insert_result("linked", n, m, exec_time)
+		dao.insert_result("weighted_linked", n, weighted_m, weighted_exec_time)
 		
 		# Next benchmark
 		n = n * p
 		e = round(density * (n*(n-1))/2)
+
