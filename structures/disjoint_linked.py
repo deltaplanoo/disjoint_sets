@@ -80,27 +80,51 @@ class DisjointSetHandler:
         for node in list2.nodes: # Remove list2 from the dictionary
             self.sets.pop(node.key, None)  # Remove node from the map
 
+    def weighted_union(self, node1, node2):
+        """Union the smaller set with the larger set."""
+        list1 = self.find_set(node1)
+        list2 = self.find_set(node2)
+        if list1 == list2:
+            return  # Already in the same set, do nothing
+        
+        if len(list2.nodes) <= len(list1.nodes):
+            list1.union(list2)  # Merge list2 into list1
+            for node in list2.nodes: # Remove list2 from the dictionary
+                self.sets.pop(node.key, None)  # Remove node from the map
+        else:
+            list2.union(list1)
+            for node in list1.nodes: # Remove list1 from the dictionary
+                self.sets.pop(node.key, None)  # Remove node from the map
+
+
     def generate_nodes(self, n):
         """Generate a list of Node objects with keys from 0 to n-1."""
         return [self.make_set(i) for i in range(n)]
 
     def find_connected_components(self, graph):
-        nodes = graph.nodes
-        edges = graph.edges
         m = 0
-        for node in nodes:
+        for node in graph.nodes:
             self.make_set(node)
             m += 1
 
-        for edge in edges:
+        for edge in graph.edges:
             u, v = edge
-            #FIXME: self.union(u, v) and move the union logic to the union method
             self.union(u, v)
-            # 2 find_set() and 1 union
-            m += 3
+            m += 3  # 2 find_set() and 1 union()
         return m
 
-        
+    def weighted_find_connected_components(self, graph):
+        m = 0
+        for node in graph.nodes:
+            self.make_set(node)
+            m += 1
+
+        for edge in graph.edges:
+            u, v = edge
+            self.weighted_union(u, v)
+            m += 3
+        return m
+    
     def print(self):
         print("Disjoint Sets:")
         for key, node_list in self.sets.items():
