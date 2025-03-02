@@ -7,10 +7,10 @@ from structures import disjoint_forest as d
 from structures import graph as g
 from DAO import dao
 
-def bench(n, e, m_max, p):
+def bench(n, density, m_max, p):
 	print("Benching forest")
 	dao.create_database()
-	p_e = p * (n//e)
+	e = round(density * (n*(n-1))/2)
 	m = 0
 	while (m <= m_max):
 		### GENERAL ###
@@ -19,6 +19,7 @@ def bench(n, e, m_max, p):
 		### GRAPH GENERATION ###
 		graph = g.Graph(nodes)
 		graph.generate_edges(e)
+		print(f"Graph with {n} nodes and {e} edges -> density: {(2*e)/(n*(n-1)):.6f}")
 
 		### FIND CONNECTED COMPONENTS ###
 		start = time.time()
@@ -26,10 +27,11 @@ def bench(n, e, m_max, p):
 		end = time.time()
 		exec_time = end - start
 		print(f"m: {m} - time: {exec_time:.6f} seconds")
+		print()
 
 		# Benchmark results
 		dao.insert_result("forest", n, m, exec_time)
 		
 		# Next benchmark
 		n = n * p
-		e = e * p_e
+		e = round(density * (n*(n-1))/2)

@@ -9,7 +9,7 @@ def bench_all(n, e, m_max, p):
 	bench_list(n, e, m_max, p)
 	bench_forest(n, e, m_max, p)
 
-def generate_plot(n=None, methods=None, output_path=None):
+def generate_plot(output_path=None):
     # Connect to the db
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
@@ -24,22 +24,8 @@ def generate_plot(n=None, methods=None, output_path=None):
     
     # Build the query
     query = "SELECT method, n, m, time FROM results"
-    conditions = []
-    params = []
-
-    if n is not None:
-        conditions.append("n = ?")
-        params.append(n)
     
-    if methods is not None and isinstance(methods, list):
-        placeholders = ",".join("?" * len(methods))
-        conditions.append(f"method IN ({placeholders})")
-        params.extend(methods)
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-    
-    cursor.execute(query, params)
+    cursor.execute(query)
     data = cursor.fetchall()
     conn.close()
 
@@ -92,9 +78,5 @@ def generate_plot(n=None, methods=None, output_path=None):
 
 
 if __name__ == "__main__":
-
-	bench_all(10, 3, 10000000, 3)
+	bench_all(5, 0.2, 1000000, 3)	# nodes, density, m_max, step
 	generate_plot()
-    # generate_plot(n=1000)  # Plot data for n=1000
-    # generate_plot(methods=["forest", "list"])  # Plot specific methods
-    # generate_plot(n=1000, methods=["forest"], output_path="forest_n1000.png")  # Save to file
