@@ -47,6 +47,16 @@ def remove_by_method(method_value):
     except sqlite3.Error as e:
         print(f"An error occurred: {e}")
 
+def remove_by_id(id_value):
+    try:
+        with sqlite3.connect(DATABASE_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM results WHERE id = ?", (id_value,))
+            conn.commit()
+            print(f"Removed tuples with id = '{id_value}'.")
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+
 
 # Query and display all results
 def display_results():
