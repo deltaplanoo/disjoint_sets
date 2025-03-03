@@ -9,7 +9,7 @@ def bench_all(n, e, m_max, p):
 	bench_list(n, e, m_max, p)
 	bench_forest(n, e, m_max, p)
 
-def generate_plot(title="Tempo vs Numero m di operazioni", output_path=None):
+def generate_plot(title="LC e LC con EUP", output_path=None):
     # Connect to the db
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
@@ -68,5 +68,5 @@ if __name__ == "__main__":
 	base = 500
 	step = 500
 
-	bench_list([base+step*x for x in range(20)], 0.9)
+	#bench_list([base+step*x for x in range(20)], 0.9)
 	generate_plot()
