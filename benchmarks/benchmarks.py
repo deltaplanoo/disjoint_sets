@@ -41,33 +41,20 @@ def generate_plot(title="Tempo vs Numero m di operazioni", output_path=None):
     plt.figure(figsize=(10, 6))
 
     for method in methods_set:
-        method_data = [(row[2], row[3]) for row in data if row[0] == method]  # (m, time)
-        method_data.sort()  # Ensure x values are sorted
-        m_values, time_values = zip(*method_data)
+        method_data = [(row[1], row[3]) for row in data if row[0] == method]  # (m, time)
+        #method_data.sort()  # Ensure x values are sorted
+        n_values, time_values = zip(*method_data)
         
         # Convert to numpy for better handling of log scale
-        m_values = np.array(m_values)
         time_values = np.array(time_values)
+        n_values = np.array(n_values)
 
-        plt.plot(m_values, time_values, marker='o', linestyle='-', label=method, color=method_colors[method])
+        plt.plot(n_values, time_values, marker='o', linestyle='-', label=method, color=method_colors[method])
 
-    plt.xscale("log")
-    plt.yscale("log")
-
-    plt.xlabel("m (Scala Logaritmica)")
-    plt.ylabel("Tempo (Scala Logaritmica)")
+    plt.xlabel("n")
+    plt.ylabel("tempo")
     plt.title(title)
     plt.legend()
-
-    # Set grid only at powers of 10
-    ax = plt.gca()
-    ax.set_xticks(10**np.arange(np.floor(np.log10(min(m_values))), np.ceil(np.log10(max(m_values))) + 1))
-    ax.set_yticks(10**np.arange(np.floor(np.log10(min(time_values))), np.ceil(np.log10(max(time_values))) + 1))
-    ax.grid(True, which="major", linestyle="--", linewidth=0.5)
-
-    # Ensure only major ticks appear
-    ax.xaxis.set_minor_locator(plt.NullLocator())
-    ax.yaxis.set_minor_locator(plt.NullLocator())
 
     # Save or show the plot
     if output_path:
@@ -78,6 +65,8 @@ def generate_plot(title="Tempo vs Numero m di operazioni", output_path=None):
 
 
 if __name__ == "__main__":
-	#bench_all(5, 0.2, 1000000, 3)	# nodes, density, m_max, step
-	bench_list(5, 0.2, 1000000, 3)
+	base = 500
+	step = 500
+
+	bench_list([base+step*x for x in range(20)], 0.9)
 	generate_plot()
