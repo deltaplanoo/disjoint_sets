@@ -4,13 +4,13 @@ import sqlite3
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+import math
 
 def bench_all(n, e, m_max, p):
 	bench_list(n, e, m_max, p)
 	bench_forest(n, e, m_max, p)
 
-def generate_plot(title="Foresta e Foresta con PC", output_path=None):
-    # Connect to the db
+def generate_plot(title="no name", output_path=None):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
     db_path = os.path.join(project_root, 'DAO', 'benchmark_results.db')
@@ -22,7 +22,6 @@ def generate_plot(title="Foresta e Foresta con PC", output_path=None):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    # Build the query
     query = "SELECT method, n, m, time FROM results"
     
     cursor.execute(query)
@@ -44,8 +43,8 @@ def generate_plot(title="Foresta e Foresta con PC", output_path=None):
         method_data = [(row[1], row[3]) for row in data if row[0] == method]  # (m, time)
         #method_data.sort()  # Ensure x values are sorted
         n_values, time_values = zip(*method_data)
+
         
-        # Convert to numpy for better handling of log scale
         time_values = np.array(time_values)
         n_values = np.array(n_values)
 
@@ -63,10 +62,51 @@ def generate_plot(title="Foresta e Foresta con PC", output_path=None):
     else:
         plt.show()
 
+def generate_plot_ref():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    db_path = os.path.join(project_root, 'DAO', 'benchmark_results.db')
+    
+    if not os.path.exists(db_path):
+        raise FileNotFoundError(f"Database not found at {db_path}")
+        
+    print(f"Using database at: {db_path}")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    query = "SELECT method, n, m, time FROM results"
+    
+    cursor.execute(query)
+    data = cursor.fetchall()
+    conn.close()
+
+    # Unpack the data into lists
+    methods = [row[0] for row in data]
+    n_values = [row[1] for row in data]
+    m_values = [row[2] for row in data]
+    time_values = [row[3] for row in data]
+    calculated_values = [math.pow(n,2) for m, n in zip(m_values, n_values)]
+  
+    max_time = max(time_values)
+    max_calc = max(calculated_values)
+
+    calculated_values = (np.array(calculated_values) * np.array(time_values)) / max_calc
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(n_values, time_values, marker='o', linestyle='-', color='b', label='m vs Time')
+    plt.plot(n_values, calculated_values, marker='x', linestyle='--', color='r', label='n^2')
+
+    plt.xlabel('n')
+    plt.ylabel('Tempo (s)')
+    plt.title('Foresta')
+
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 
 if __name__ == "__main__":
-	base = 500
-	step = 500
-
+    base = 500
+    step = 500
 	#bench_forest([base+step*x for x in range(10)], 0.9)
-	generate_plot()
+    generate_plot("Foresta")
