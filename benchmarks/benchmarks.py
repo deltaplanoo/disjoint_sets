@@ -51,7 +51,7 @@ def generate_plot(title="no name", output_path=None):
         plt.plot(n_values, time_values, marker='o', linestyle='-', label=method, color=method_colors[method])
 
     plt.xlabel("n")
-    plt.ylabel("tempo")
+    plt.ylabel("Tempo")
     plt.title(title)
     plt.legend()
 
@@ -109,4 +109,5 @@ if __name__ == "__main__":
     base = 500
     step = 500
 	#bench_forest([base+step*x for x in range(10)], 0.9)
-    generate_plot("Foresta")
+    bench_list([base+step*x for x in range(10)], 0.9)
+    generate_plot("Lista Concatenata con EUP", "linked_eup.png")
