@@ -13,10 +13,15 @@ class Node:
 		if self.parent is self:
 			return self
 		return self.parent.find_set()
+    
+	def compressed_find_set(self):
+		if self.parent is not self:
+			self.parent = self.parent.find_set()
+		return self.parent
 	
 	def union(self, other):
-		other_root = other.find_set()
-		self_root = self.find_set()
+		other_root = other.compressed_find_set()
+		self_root = self.compressed_find_set()
 		if other_root is self_root:
 			return
 		other_root.parent = self_root
