@@ -20,8 +20,8 @@ class Node:
 		return self.parent
 	
 	def union(self, other):
-		other_root = other.compressed_find_set()
-		self_root = self.compressed_find_set()
+		other_root = other.find_set()
+		self_root = self.find_set()
 		if other_root is self_root:
 			return
 		other_root.parent = self_root
