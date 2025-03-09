@@ -22,11 +22,11 @@ def bench(n_list, density):
 
 		### FIND CONNECTED COMPONENTS ###
 		start = time.perf_counter_ns()
-		m = handler.find_connected_components(graph)
+		m = handler.compressed_find_connected_components(graph)
 		end = time.perf_counter_ns()
 		exec_time = (end - start) / 1e9
 
 		print(f"(Forest)   m: {m} - time: {exec_time:.6f} seconds")
 		print()
 
-		dao.insert_result("forest", n, m, exec_time)
+		dao.insert_result("forest_pc", n, m, exec_time)

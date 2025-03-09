@@ -37,7 +37,7 @@ def generate_plot(title="no name", output_path=None):
     colors = plt.colormaps["tab10"]
     method_colors = {method: colors(i) for i, method in enumerate(methods_set)}
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(5,4))
 
     for method in methods_set:
         method_data = [(row[1], row[3]) for row in data if row[0] == method]  # (m, time)
@@ -108,6 +108,6 @@ def generate_plot_ref():
 if __name__ == "__main__":
     base = 500
     step = 500
-    bench_forest([base+step*x for x in range(10)], 0.9)
-    # bench_list([base+step*x for x in range(10)], 0.9)
-    generate_plot("Foresta", "forest.png")
+    #bench_forest([base+step*x for x in range(10)], 0.9)
+    bench_list([base+step*x for x in range(10)], 0.9)
+    generate_plot("Lista Concatenata", "linked.png")

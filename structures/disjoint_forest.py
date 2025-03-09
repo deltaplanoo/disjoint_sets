@@ -18,10 +18,17 @@ class Node:
 		if self.parent is not self:
 			self.parent = self.parent.find_set()
 		return self.parent
-	
+
 	def union(self, other):
 		other_root = other.find_set()
 		self_root = self.find_set()
+		if other_root is self_root:
+			return
+		other_root.parent = self_root
+		
+	def compressed_union(self, other):
+		other_root = other.compressed_find_set()
+		self_root = self.compressed_find_set()
 		if other_root is self_root:
 			return
 		other_root.parent = self_root
@@ -43,6 +50,9 @@ class DisjointSetHandler:
 	
     def union(self, node1, node2):
         node1.union(node2)
+    
+    def compressed_union(self, node1, node2):
+          node1.compressed_union(node2)
 
     def find_connected_components(self, graph):
         nodes = graph.nodes
@@ -55,5 +65,19 @@ class DisjointSetHandler:
         for edge in edges:
             u, v = edge
             self.union(u, v)
+            m += 3
+        return m
+	
+    def compressed_find_connected_components(self, graph):
+        nodes = graph.nodes
+        edges = graph.edges
+        m = 0
+        for node in nodes:
+            self.make_set(node)
+            m += 1
+
+        for edge in edges:
+            u, v = edge
+            self.compressed_union(u, v)
             m += 3
         return m
