@@ -26,7 +26,7 @@ def bench(n_list, density):
 		end = time.perf_counter_ns()
 		exec_time = (end - start) / 1e9
 
-		print(f"(Forest)   m: {m} - time: {exec_time:.6f} seconds")
+		print(f"(Forest PC)   m: {m} - time: {exec_time:.6f} seconds")
 		print()
 
 		dao.insert_result("forest_pc", n, m, exec_time)

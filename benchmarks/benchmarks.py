@@ -108,6 +108,6 @@ def generate_plot_ref():
 if __name__ == "__main__":
     base = 500
     step = 500
-    #bench_forest([base+step*x for x in range(10)], 0.9)
-    bench_list([base+step*x for x in range(10)], 0.9)
-    generate_plot("Lista Concatenata", "linked.png")
+    bench_forest([base+step*x for x in range(10)], 0.9)
+    #bench_list([base+step*x for x in range(10)], 0.9)
+    generate_plot("Foresta vs Foresta con CC", "forest_vs_pc.png")
