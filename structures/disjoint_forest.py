@@ -16,7 +16,7 @@ class Node:
     
 	def compressed_find_set(self):
 		if self.parent is not self:
-			self.parent = self.parent.find_set()
+			self.parent = self.parent.compressed_find_set()
 		return self.parent
 
 	def union(self, other):
