@@ -22,19 +22,19 @@ def bench(n_list, density):
 
 		### FIND CONNECTED COMPONENTS ###
 		# Normal & Weighted computed on the same graph
-		start = time.perf_counter_ns()
-		m = handler.find_connected_components(graph)
-		end = time.perf_counter_ns()
+		#start = time.perf_counter_ns()
+		#m = handler.find_connected_components(graph)
+		#end = time.perf_counter_ns()
 		weighted_start = time.perf_counter_ns()
 		weighted_m = handler.weighted_find_connected_components(graph)
 		weighted_end = time.perf_counter_ns()
-		exec_time = (end - start) / 1e9
+		#exec_time = (end - start) / 1e9
 		weighted_exec_time = (weighted_end - weighted_start) / 1e9
-		print(f"(Normal LL)   m: {m} - time: {exec_time:.6f} seconds")
+		#print(f"(Normal LL)   m: {m} - time: {exec_time:.6f} seconds")
 		print(f"(Weighted LL) m: {weighted_m} - time : {weighted_exec_time:.6f} seconds")
 		print()
 
 		# Benchmark results
-		dao.insert_result("linked", n, m, exec_time)
+		#dao.insert_result("linked", n, m, exec_time)
 		dao.insert_result("weighted_linked", n, weighted_m, weighted_exec_time)
 		

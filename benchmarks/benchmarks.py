@@ -110,4 +110,4 @@ if __name__ == "__main__":
     step = 500
     bench_forest([base+step*x for x in range(10)], 0.9)
     #bench_list([base+step*x for x in range(10)], 0.9)
-    generate_plot("Foresta vs Foresta con CC", "forest_vs_pc.png")
+    generate_plot("Foresta con CC ", "F_CC.png")

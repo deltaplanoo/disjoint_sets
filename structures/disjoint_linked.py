@@ -16,7 +16,7 @@ class Node:
     def find_list(self):
         return self.list
 
-class NodeList:
+class LinkedList:
     def __init__(self, node):   # MAKE_SET()
         self.head = None
         self.tail = None
@@ -60,7 +60,7 @@ class DisjointSetHandler:
         """Create a new set with a single node."""
         if node.key in self.sets:
             return self.sets[node.key]
-        new_set = NodeList(node)
+        new_set = LinkedList(node)
         self.sets[node.key] = new_set
         return new_set
 
